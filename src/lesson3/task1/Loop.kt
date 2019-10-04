@@ -1,7 +1,8 @@
-@file:Suppress("UNUSED_PARAMETER")
+@file:Suppress("UNUSED_PARAMETER", "UNREACHABLE_CODE")
 
 package lesson3.task1
 
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -12,7 +13,7 @@ import kotlin.math.sqrt
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result *= i // Please do not fix in master
     }
     return result
 }
@@ -67,7 +68,15 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var sum = 1
+    var m = n
+    while (m / 10 > 0) {
+        sum++
+        m /= 10
+    }
+    return sum
+}
 
 /**
  * Простая
@@ -75,7 +84,19 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    var n1 = 1
+    var n2 = 1
+    var m = 0
+    return if (n > 2) {
+        for (i in 3..n) {
+            m = n1 + n2
+            n1 = n2
+            n2 = m
+        }
+        m
+    } else 1
+}
 
 /**
  * Простая
@@ -83,21 +104,38 @@ fun fib(n: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    var k = 2
+    while (k % m != 0 && k % n != 0) {
+        k++
+    }
+    return k
+}
+
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    var k = 0
+    for (i in 2..sqrt(n.toDouble()).toInt()) {
+        if (n % i == 0) {
+            k = i
+            break
+        }
+    }
+    return if (k == 0) n
+    else k
+}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -133,7 +171,17 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var k = x
+    var m = 0
+    while (k != 1) {
+        m++
+        if (k % 2 == 0)
+            k /= 2
+        else k = 3 * k + 1
+    }
+    return m
+}
 
 /**
  * Средняя
@@ -164,7 +212,26 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var k = n
+    var m = 0
+    var a = 0
+    var c = 0
+    while (k / 10 > 0) {
+        m++
+        k /= 10
+    }
+    k = n
+    while (k > 0) {
+        a = k % 10
+        k /= 10
+        c += (a * 10.0.pow(m)).toInt()
+        m -= 1
+    }
+    return if (m == 0) k
+    else c
+}
+
 
 /**
  * Средняя
@@ -196,7 +263,20 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var k = 0
+    var count = 0
+    var a = 0
+    for (i in 1..n) {
+        k++
+        a = k * k
+        count += digitNumber(a)
+        if (count >= n)
+            break
+    }
+    return if (count > n) (a / 10.0.pow(count - n).toInt()) % 10
+    else a % 10
+}
 
 /**
  * Сложная
@@ -207,4 +287,17 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var count = 0
+    var k = 0
+    var a = 0
+    for (i in 1..n) {
+        k++
+        a = fib(k)
+        count += digitNumber(a)
+        if (count >= n)
+            break
+    }
+    return if (count > n) (a / 10.0.pow(count - n).toInt()) % 10
+    else a % 10
+}

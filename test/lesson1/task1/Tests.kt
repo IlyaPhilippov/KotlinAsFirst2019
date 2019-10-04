@@ -12,6 +12,7 @@ class Tests {
         assertEquals(0, sqr(0))
         assertEquals(4, sqr(2))
         assertEquals(9, sqr(-3))
+
     }
 
     @Test
@@ -52,6 +53,8 @@ class Tests {
         assertEquals(30035, seconds(8, 20, 35))
         assertEquals(86400, seconds(24, 0, 0))
         assertEquals(13, seconds(0, 0, 13))
+
+
     }
 
     @Test
