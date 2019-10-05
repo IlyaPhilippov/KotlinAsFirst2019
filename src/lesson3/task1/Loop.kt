@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -71,7 +72,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
 fun digitNumber(n: Int): Int {
     var sum = 1
     var m = n
-    while (m / 10 > 0) {
+    while (m / 10 != 0) {
         sum++
         m /= 10
     }
@@ -105,11 +106,16 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var k = 2
-    while (k % m != 0 && k % n != 0) {
-        k++
+    var a = m
+    var b = n
+    while ((a != 0) && (b != 0)) {
+        if (a > b)
+            a %= b
+        else
+            b %= a
     }
-    return k
+    val c = a + b
+    return m / c * n
 }
 
 
@@ -144,7 +150,18 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    var a = m
+    var b = n
+    while ((a != 0) && (b != 0)) {
+        if (a > b)
+            a %= b
+        else
+            b %= a
+    }
+    val c = a + b
+    return c == 1
+}
 
 /**
  * Простая
@@ -153,7 +170,11 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    val k = sqrt(m.toDouble()).toInt()
+    val c = sqrt(n.toDouble()).toInt()
+    return (c > k) || (sqr(k) == m) || (sqr(c) == n)
+}
 
 /**
  * Средняя
@@ -242,7 +263,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя

@@ -4,6 +4,7 @@ package lesson2.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -70,6 +71,7 @@ fun ageDescription(age: Int): String =
         age % 100 in 10..20 -> "$age лет"
         age % 10 == 1 -> "$age год"
         age % 10 in 2..4 -> "$age года"
+        age % 10 == 0 -> "$age лет"
         else -> "no"
     }
 
@@ -136,7 +138,7 @@ fun rookOrBishopThreatens(
     return when {
         ((kingX == rookX || kingY == rookY) && (((kingX + kingY) % 2) == ((bishopX + bishopY) % 2))) -> 3
         (kingX == rookX || kingY == rookY) -> 1
-        ((kingX + kingY) % 2) == ((bishopX + bishopY) % 2) -> 2
+        abs(kingX - bishopX) == abs(kingY - bishopY) -> 2
         else -> 0
     }
 
@@ -169,7 +171,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     return when {
-        (b == c) || (a == d) || (a == b) || (c == d) -> 0
+        (b == c) || (a == d) || (c == d) -> 0
         (a > c) && (b < d) -> b - a
         (a > c) && (d > a) && (b > d) -> d - a
         (c > a) && (b > c) && (d > b) -> b - c

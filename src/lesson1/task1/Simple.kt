@@ -2,6 +2,7 @@
 
 package lesson1.task1
 
+import kotlin.math.PI
 import kotlin.math.sqrt
 
 /**
@@ -78,7 +79,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double =
  * Пользователь задает угол в градусах, минутах и секундах (например, 36 градусов 14 минут 35 секунд).
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
-fun angleInRadian(deg: Int, min: Int, sec: Int): Double = (deg * 3600 + min * 60 + sec) / 206264.8
+fun angleInRadian(deg: Int, min: Int, sec: Int): Double = (deg * 3600 + min * 60 + sec) * PI / (180 * 60 * 60)
 
 /**
  * Тривиальная

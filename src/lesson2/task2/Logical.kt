@@ -3,6 +3,7 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 /**
@@ -34,7 +35,7 @@ fun isNumberHappy(number: Int): Boolean =
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
     when {
-        (x1 == x2) || (y1 == y2) || ((x1 + y1) % 2) == ((x2 + y2) % 2) -> true
+        (x1 == x2) || (y1 == y2) || abs(x1 - x2) == abs(y1 - y2) -> true
         else -> false
     }
 
