@@ -34,6 +34,20 @@ fun isPrime(n: Int): Boolean {
     return true
 }
 
+
+fun nod(m: Int, n: Int): Int {
+    /** алгоритм Евклида */
+    var a = m
+    var b = n
+    while ((a != 0) && (b != 0)) {
+        if (a > b)
+            a %= b
+        else
+            b %= a
+    }
+    return a + b
+}
+
 /**
  * Пример
  *
@@ -89,14 +103,16 @@ fun fib(n: Int): Int {
     var n1 = 1
     var n2 = 1
     var m = 0
-    return if (n > 2) {
+    if (n <= 2)
+        return 1
+    else {
         for (i in 3..n) {
             m = n1 + n2
             n1 = n2
             n2 = m
         }
-        m
-    } else 1
+        return m
+    }
 }
 
 /**
@@ -105,18 +121,7 @@ fun fib(n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {
-    var a = m
-    var b = n
-    while ((a != 0) && (b != 0)) {
-        if (a > b)
-            a %= b
-        else
-            b %= a
-    }
-    val c = a + b
-    return m / c * n
-}
+fun lcm(m: Int, n: Int): Int = m / nod(m, n) * n
 
 
 /**
@@ -150,18 +155,7 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    var a = m
-    var b = n
-    while ((a != 0) && (b != 0)) {
-        if (a > b)
-            a %= b
-        else
-            b %= a
-    }
-    val c = a + b
-    return c == 1
-}
+fun isCoPrime(m: Int, n: Int): Boolean = nod(m, n) == 1
 
 /**
  * Простая
@@ -235,22 +229,16 @@ fun cos(x: Double, eps: Double): Double = TODO()
  */
 fun revert(n: Int): Int {
     var k = n
-    var m = 0
+    var m = digitNumber(n) - 1
     var a = 0
     var c = 0
-    while (k / 10 > 0) {
-        m++
-        k /= 10
-    }
-    k = n
     while (k > 0) {
         a = k % 10
         k /= 10
         c += (a * 10.0.pow(m)).toInt()
         m -= 1
     }
-    return if (m == 0) k
-    else c
+    return c
 }
 
 
@@ -295,8 +283,7 @@ fun squareSequenceDigit(n: Int): Int {
         if (count >= n)
             break
     }
-    return if (count > n) (a / 10.0.pow(count - n).toInt()) % 10
-    else a % 10
+    return a / 10.0.pow(count - n).toInt() % 10
 }
 
 /**
@@ -319,6 +306,7 @@ fun fibSequenceDigit(n: Int): Int {
         if (count >= n)
             break
     }
-    return if (count > n) (a / 10.0.pow(count - n).toInt()) % 10
-    else a % 10
+    return a / 10.0.pow(count - n).toInt() % 10
 }
+
+

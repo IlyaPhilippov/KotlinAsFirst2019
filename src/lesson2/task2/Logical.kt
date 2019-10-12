@@ -47,16 +47,20 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 fun daysInMonth(month: Int, year: Int): Int {
-    return when {
-        month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12 -> 31
-        ((month == 2) && (year % 4 > 0)) || (month == 2) && ((year / 4) % 10 == 5) -> 28
-        (month == 2) && (year % 4 == 0) && (year % 100 != 0 || year % 400 == 0) -> 29
+    val a = 0
+    return when (month) {
+        1, 3, 5, 7, 8, 10, 12 -> 31
+        2 -> when {
+            (year % 4 == 0) && (year % 100 != 0 || year % 400 == 0) -> 29
+            else -> 28
+        }
         else -> 30
     }
 
 }
-
-
+/**
+(year % 4 == 0) && (year % 100 != 0 || year % 400 == 0) -> 29
+ */
 /**
  * Средняя
  *
@@ -80,11 +84,11 @@ fun circleInside(
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    return when {
-        (a <= s) && (b <= r) || (a <= s) && (c <= r) -> true
-        (b <= s) && (c <= r) || (a <= r) && (b <= s) -> true
-        (a <= r) && (c <= s) || (b <= r) && (c <= s) -> true
-        else -> false
-    }
+    val minB = minOf(a, b, c)
+    val minW = minOf(r, s)
+    val maxB = maxOf(a, b, c)
+    val maxW = maxOf(r, s)
+    val midB = (a + b + c) - (minB + maxB)
+    return (minB <= minW) && (midB <= maxW)
 }
 

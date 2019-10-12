@@ -69,10 +69,9 @@ fun ageDescription(age: Int): String =
     when {
         age % 10 in 5..9 -> "$age лет"
         age % 100 in 10..20 -> "$age лет"
-        age % 10 == 1 -> "$age год"
-        age % 10 in 2..4 -> "$age года"
         age % 10 == 0 -> "$age лет"
-        else -> "no"
+        age % 10 in 2..4 -> "$age года"
+        else -> "$age год"
     }
 
 
@@ -112,10 +111,12 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
+    val a = kingX == rookX1 || kingY == rookY1
+    val b = kingX == rookX2 || kingY == rookY2
     return when {
-        ((kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2)) -> 3
-        (kingX == rookX1 || kingY == rookY1) -> 1
-        (kingX == rookX2 || kingY == rookY2) -> 2
+        a && b -> 3
+        a -> 1
+        b -> 2
         else -> 0
     }
 }
@@ -135,10 +136,12 @@ fun rookOrBishopThreatens(
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int {
+    val a = kingX == rookX || kingY == rookY
+    val b = abs(kingX - bishopX) == abs(kingY - bishopY)
     return when {
-        ((kingX == rookX || kingY == rookY) && abs(kingX - bishopX) == abs(kingY - bishopY)) -> 3
-        (kingX == rookX || kingY == rookY) -> 1
-        abs(kingX - bishopX) == abs(kingY - bishopY) -> 2
+        a && b -> 3
+        a -> 1
+        b -> 2
         else -> 0
     }
 
@@ -153,12 +156,17 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val max = maxOf(a, b, c)
+    val min = minOf(a, b, c)
+    val mid = (a + b + c) - (max + min)
     return when {
-        ((a + b < c) || (a + c < b) || (b + c < a)) -> -1
-        ((sqr(a) + sqr(b) == sqr(c)) || (sqr(c) + sqr(a) == sqr(b)) || (sqr(b) + sqr(c) == sqr(a))) -> 1
-        ((sqr(a) + sqr(b) < sqr(c)) || (sqr(c) + sqr(a) < sqr(b)) || (sqr(b) + sqr(c) < sqr(a))) -> 2
+        (min + mid < max) -> -1
+        (sqr(min) + sqr(mid) == sqr(max)) -> 1
+        (sqr(min) + sqr(mid) < sqr(max)) -> 2
         else -> 0
     }
+
+
 }
 
 /**
@@ -170,12 +178,13 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    val max1 = maxOf(a, c)
+    val min1 = minOf(a, c)
+    val min2 = minOf(b, d)
     return when {
-        (b == c) || (a == d) -> 0
-        (a >= c) && (b <= d) -> b - a
-        (a >= c) && (d >= a) && (b >= d) -> d - a
-        (c >= a) && (b >= c) && (d >= b) -> b - c
-        (c >= a) && (b >= d) -> d - c
+        min2 > max1 -> min2 - max1
+        min1 == max1 -> min2 - max1
+        min2 == max1 -> 0
         else -> -1
     }
 }
