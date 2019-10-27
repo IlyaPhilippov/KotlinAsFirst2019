@@ -259,7 +259,12 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): MutableList<Int> {
     val result = mutableListOf<Int>()
     var k = n
-    while (k != 0) {
+    if (n == 0) {
+        result.add(0)
+        return result
+    }
+
+    while (k > 0) {
         result.add(0, k % base)
         k /= base
     }
@@ -364,10 +369,10 @@ fun roman(n: Int): String {
         list.add(
             0, when {
                 counter >= 4 -> plist[0].repeat(c)
-                c == 9 -> plist[0] + plist[2]
+                c == 9 -> plist[0].repeat(10 - c) + plist[2]
                 c == 0 -> ""
                 c in 1..3 -> plist[0].repeat(c)
-                c in 4..5 -> plist[0] + plist[1]
+                c in 4..5 -> plist[0].repeat(5 - c) + plist[1]
                 else -> plist[1] + (plist[0].repeat(c - 5))
             }
         )
