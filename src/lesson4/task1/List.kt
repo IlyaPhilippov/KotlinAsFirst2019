@@ -7,6 +7,61 @@ import lesson3.task1.isPrime
 import kotlin.math.pow
 import kotlin.math.sqrt
 
+fun decades(b: Int): String {
+    val n = b % 10
+    val rus11to19 = listOf(
+        "", "одиннадцать", "двенадцать", "тринадцать",
+        "четыренадцать", "пятнадцать", "шестнадцать",
+        "семнадцать", "восемнадцать", "девятнадцать"
+    )
+    return rus11to19[n]
+}
+
+fun thousands(d: Int): String {
+    var counter = 0
+    var k = d
+    var b = 0
+    val c = d % 100
+    val t = d % 10
+    val res = mutableListOf<String>()
+    val rus1to9 = listOf(
+        "", "одна тысяча", "две тысячи", "три тысячи",
+        "четыре тысячи", "пять тысяч", "шесть тысяч",
+        "семь тысяч", "восемь тысяч", "девять тысяч"
+    )
+    while (k > 0) {
+        counter++
+        b = k % 10
+        k /= 10
+        when {
+            t == 0 -> res.add(
+                0, when (counter) {
+                    1 -> rus1to9[b]
+                    2 -> rus10to90[b] + " тысяч"
+                    3 -> rus100to900[b]
+                    else -> ""
+                }
+            )
+            c in 11..19 -> res.add(
+                0, when (counter) {
+                    2 -> decades(c) + " тысяч"
+                    3 -> rus100to900[b]
+                    else -> ""
+                }
+            )
+            else -> res.add(
+                0, when (counter) {
+                    1 -> rus1to9[b]
+                    2 -> rus10to90[b]
+                    3 -> rus100to900[b]
+                    else -> ""
+                }
+            )
+        }
+    }
+    return res.joinToString(separator = " ").trim()
+}
+
 /**
  * Пример
  *
@@ -387,4 +442,52 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+val rus1to9 = listOf(
+    "", "один", "два", "три",
+    "четыре", "пять", "шесть",
+    "семь", "восемь", "девять"
+)
+val rus10to90 = listOf(
+    "", "десять", "двадцать", "тридцать",
+    "сорок", "пятьдесят", "шестьдесят",
+    "семьдесят", "восемьдесят", "девяносто"
+)
+val rus100to900 = listOf(
+    "", "сто", "двести", "триста",
+    "четыреста", "пятьсот", "шестьсот",
+    "семьсот", "восемьсот", "девятьсот"
+)
+
+fun russian(n: Int): String {
+    val result = mutableListOf<String>()
+    var k = n
+    var counter = 0
+    var c = 0
+    val b = k % 100
+    val d = k / 1000
+    while (k > 0) {
+        counter++
+        c = k % 10
+        k /= 10
+        if (b in 11..19)
+            result.add(
+                0, when (counter) {
+                    2 -> decades(b)
+                    3 -> rus100to900[c]
+                    4 -> thousands(d)
+                    else -> ""
+                }
+            )
+        else
+            result.add(
+                0, when (counter) {
+                    1 -> rus1to9[c]
+                    2 -> rus10to90[c]
+                    3 -> rus100to900[c]
+                    4 -> thousands(d)
+                    else -> ""
+                }
+            )
+    }
+    return result.joinToString(separator = " ").trim()
+}
