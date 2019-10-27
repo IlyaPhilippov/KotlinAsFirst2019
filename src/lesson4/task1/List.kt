@@ -10,9 +10,9 @@ import kotlin.math.sqrt
 fun decades(b: Int): String {
     val n = b % 10
     val rus11to19 = listOf(
-        "", "одиннадцать", "двенадцать", "тринадцать",
-        "четыренадцать", "пятнадцать", "шестнадцать",
-        "семнадцать", "восемнадцать", "девятнадцать"
+        "", "одиннадцать ", "двенадцать ", "тринадцать ",
+        "четыренадцать ", "пятнадцать ", "шестнадцать ",
+        "семнадцать ", "восемнадцать ", "девятнадцать "
     )
     return rus11to19[n]
 }
@@ -37,14 +37,14 @@ fun thousands(d: Int): String {
             t == 0 -> res.add(
                 0, when (counter) {
                     1 -> rus1to9[b]
-                    2 -> rus10to90[b] + " тысяч"
+                    2 -> rus10to90[b] + "тысяч"
                     3 -> rus100to900[b]
                     else -> ""
                 }
             )
             c in 11..19 -> res.add(
                 0, when (counter) {
-                    2 -> decades(c) + " тысяч"
+                    2 -> decades(c) + "тысяч"
                     3 -> rus100to900[b]
                     else -> ""
                 }
@@ -59,6 +59,7 @@ fun thousands(d: Int): String {
             )
         }
     }
+    res.removeIf { it.isEmpty() }
     return res.joinToString(separator = " ").trim()
 }
 
@@ -489,5 +490,6 @@ fun russian(n: Int): String {
                 }
             )
     }
+    result.removeIf { it.isEmpty() }
     return result.joinToString(separator = " ").trim()
 }
