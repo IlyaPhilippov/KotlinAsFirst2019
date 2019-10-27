@@ -35,7 +35,7 @@ fun isPrime(n: Int): Boolean {
 }
 
 
-fun nod(m: Int, n: Int): Int {
+fun gcd(m: Int, n: Int): Int {
     /** алгоритм Евклида */
     var a = m
     var b = n
@@ -105,14 +105,12 @@ fun fib(n: Int): Int {
     var m = 0
     if (n <= 2)
         return 1
-    else {
-        for (i in 3..n) {
-            m = n1 + n2
-            n1 = n2
-            n2 = m
-        }
-        return m
+    for (i in 3..n) {
+        m = n1 + n2
+        n1 = n2
+        n2 = m
     }
+    return m
 }
 
 /**
@@ -121,7 +119,7 @@ fun fib(n: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = m / nod(m, n) * n
+fun lcm(m: Int, n: Int): Int = m / gcd(m, n) * n
 
 
 /**
@@ -131,14 +129,12 @@ fun lcm(m: Int, n: Int): Int = m / nod(m, n) * n
  */
 fun minDivisor(n: Int): Int {
     var k = 0
-    for (i in 2..sqrt(n.toDouble()).toInt()) {
+    for (i in 2..sqrt(n.toDouble()).toInt())
         if (n % i == 0) {
             k = i
-            break
+            return k
         }
-    }
-    return if (k == 0) n
-    else k
+    return n
 }
 
 /**
@@ -155,7 +151,7 @@ fun maxDivisor(n: Int): Int = n / minDivisor(n)
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = nod(m, n) == 1
+fun isCoPrime(m: Int, n: Int): Boolean = gcd(m, n) == 1
 
 /**
  * Простая
@@ -229,14 +225,14 @@ fun cos(x: Double, eps: Double): Double = TODO()
  */
 fun revert(n: Int): Int {
     var k = n
-    var m = digitNumber(n) - 1
     var a = 0
     var c = 0
     while (k > 0) {
         a = k % 10
         k /= 10
-        c += (a * 10.0.pow(m)).toInt()
-        m -= 1
+        c *= 10
+        c += a
+
     }
     return c
 }
