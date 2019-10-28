@@ -37,14 +37,14 @@ fun thousands(d: Int): String {
             t == 0 -> res.add(
                 0, when (counter) {
                     1 -> rus1to9[b]
-                    2 -> rus10to90[b] + "тысяч"
+                    2 -> rus10to90[b] + " тысяч"
                     3 -> rus100to900[b]
                     else -> ""
                 }
             )
             c in 11..19 -> res.add(
                 0, when (counter) {
-                    2 -> decades(c) + "тысяч"
+                    2 -> decades(c) + " тысяч"
                     3 -> rus100to900[b]
                     else -> ""
                 }
@@ -59,7 +59,6 @@ fun thousands(d: Int): String {
             )
         }
     }
-    res.removeIf { it.isEmpty() }
     return res.joinToString(separator = " ").trim()
 }
 
@@ -456,7 +455,7 @@ val rus10to90 = listOf(
 val rus100to900 = listOf(
     "", "сто", "двести", "триста",
     "четыреста", "пятьсот", "шестьсот",
-    "семьсот", "восемьсот", "девятьсот"
+    "семьсот ", "восемьсот", "девятьсот"
 )
 
 fun russian(n: Int): String {
@@ -490,6 +489,5 @@ fun russian(n: Int): String {
                 }
             )
     }
-    result.removeIf { it.isEmpty() }
     return result.joinToString(separator = " ").trim()
 }
