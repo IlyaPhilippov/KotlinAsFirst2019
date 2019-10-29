@@ -25,9 +25,9 @@ fun thousands(d: Int): String {
     val t = d % 10
     val res = mutableListOf<String>()
     val rus1to9 = listOf(
-        "", "одна тысяча", "две тысячи", "три тысячи",
-        "четыре тысячи", "пять тысяч", "шесть тысяч",
-        "семь тысяч", "восемь тысяч", "девять тысяч"
+        "", "одна тысяча ", "две тысячи ", "три тысячи ",
+        "четыре тысячи ", "пять тысяч ", "шесть тысяч ",
+        "семь тысяч ", "восемь тысяч ", "девять тысяч "
     )
     while (k > 0) {
         counter++
@@ -37,14 +37,14 @@ fun thousands(d: Int): String {
             t == 0 -> res.add(
                 0, when (counter) {
                     1 -> rus1to9[b]
-                    2 -> rus10to90[b] + " тысяч"
+                    2 -> rus10to90[b] + "тысяч "
                     3 -> rus100to900[b]
                     else -> ""
                 }
             )
             c in 11..19 -> res.add(
                 0, when (counter) {
-                    2 -> decades(c) + " тысяч"
+                    2 -> decades(c) + "тысяч "
                     3 -> rus100to900[b]
                     else -> ""
                 }
@@ -59,7 +59,8 @@ fun thousands(d: Int): String {
             )
         }
     }
-    return res.joinToString(separator = " ").trim()
+    res.removeIf { it.isEmpty() }
+    return res.joinToString(separator = "")
 }
 
 /**
@@ -448,14 +449,14 @@ val rus1to9 = listOf(
     "семь", "восемь", "девять"
 )
 val rus10to90 = listOf(
-    "", "десять", "двадцать", "тридцать",
-    "сорок", "пятьдесят", "шестьдесят",
-    "семьдесят", "восемьдесят", "девяносто"
+    "", "десять ", "двадцать ", "тридцать ",
+    "сорок ", "пятьдесят ", "шестьдесят ",
+    "семьдесят ", "восемьдесят ", "девяносто "
 )
 val rus100to900 = listOf(
-    "", "сто", "двести", "триста",
-    "четыреста", "пятьсот", "шестьсот",
-    "семьсот ", "восемьсот", "девятьсот"
+    "", "сто ", "двести ", "триста ",
+    "четыреста ", "пятьсот ", "шестьсот ",
+    "семьсот ", "восемьсот ", "девятьсот "
 )
 
 fun russian(n: Int): String {
@@ -489,5 +490,6 @@ fun russian(n: Int): String {
                 }
             )
     }
-    return result.joinToString(separator = " ").trim()
+    result.removeIf { it.isEmpty() }
+    return result.joinToString(separator = "").trim()
 }
