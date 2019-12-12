@@ -115,7 +115,7 @@ fun dateStrToDigit(str: String): String {
         val day = date[0].toInt()
         val month = monthToNumber(date[1])
         val year = date[2].toInt()
-        if ((month == -1) || (day > daysInMonth(month, year)) || (day < 1) || (year < 1))
+        if ((month == -1) || (day > daysInMonth(month, year)) || (day < 1) || (year < 0))
             return ""
         return String.format("%02d.%02d.%d", day, month, year)
     } catch (exc: NumberFormatException) {
@@ -143,7 +143,7 @@ fun dateDigitToStr(digital: String): String {
         val day = date[0].toInt()
         val month = numberToMonth(date[1].toInt())
         val year = date[2].toInt()
-        if ((month == "") || (day > daysInMonth(date[1].toInt(), year)) || (day < 1) || (year < 1))
+        if ((month == "") || (day > daysInMonth(date[1].toInt(), year)) || (day < 1) || (year < 0))
             return ""
 
         return String.format("%d %s %d", day, month, year)
@@ -254,38 +254,33 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    try {
-        val replace = Regex("""[ ]""").replace(expression, " ").split(" ").toMutableList()
-        replace.removeIf { it.isEmpty() }
-        if (replace[0].startsWith('+') || replace[0].startsWith('-'))
-            throw IllegalArgumentException()
-        var counter = 0
-        var counter2 = 0
-        var sum = 0
-        for (element in replace) {
-            if (element == "-")
-                counter++
-            if (element == "+")
-                counter2++
-        }
-        for (i in 0 until replace.size - counter)
-            if (replace[i] == "-") {
-                replace[i] += replace[i + 1]
-                replace.remove(replace[i + 1])
-            }
-        for (i in 0 until replace.size - counter2)
-            if (replace[i] == "+") {
-                replace[i] += replace[i + 1]
-                replace.remove(replace[i + 1])
-            }
-        for (element in replace)
-            sum += element.toInt()
-        return sum
-    } catch (exp: Exception) {
+    val replace = Regex("""[ ]""").replace(expression, " ").split(" ").toMutableList()
+    replace.removeIf { it.isEmpty() }
+    if (replace[0].startsWith('+') || replace[0].startsWith('-'))
         throw IllegalArgumentException()
+    var counter = 0
+    var counter2 = 0
+    var sum = 0
+    for (element in replace) {
+        if (element == "-")
+            counter++
+        if (element == "+")
+            counter2++
     }
+    for (i in 0 until replace.size - counter2)
+        if (replace[i] == "+") {
+            replace[i] += replace[i + 1]
+            replace.remove(replace[i + 1])
+        }
+    for (i in 0 until replace.size - counter)
+        if (replace[i] == "-") {
+            replace[i] += replace[i + 1]
+            replace.remove(replace[i + 1])
+        }
+    for (element in replace)
+        sum += element.toInt()
+    return sum
 }
-
 
 /**
  * Сложная
@@ -436,7 +431,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             '[' -> if (res[position] == 0) {
                 openindex = i
                 closeindex = findindex(openindex, commands)
-                i = closeindex + 1
+                i = closeindex
             } else listofidexes += i
             ']' -> if (res[position] != 0)
                 i = listofidexes.last()
