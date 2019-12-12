@@ -384,7 +384,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
 
     var res = MutableList(cells) { 0 }
     var position = 0
-    position = if (cells > 2)
+    position = if (cells > 1)
         cells / 2
     else 0
 
