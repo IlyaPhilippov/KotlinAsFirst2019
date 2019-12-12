@@ -167,13 +167,17 @@ fun dateDigitToStr(digital: String): String {
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    for (i in 0 until phone.length)
-        if ((phone[i] == '(') && (phone[i + 1] == ')'))
+    try {
+        for (i in 0 until phone.length)
+            if ((phone[i] == '(') && (phone[i + 1] == ')'))
+                return ""
+        val a = Regex("""[^+\- 0-9()]""")
+        if (a.findAll(phone, startIndex = 0).toMutableList() != emptyList<MatchResult>())
             return ""
-    val a = Regex("""[^+\- 0-9()]""")
-    if (a.findAll(phone, startIndex = 0).toMutableList() != emptyList<MatchResult>())
+        return Regex("""[\- ()]""").replace(phone, "")
+    } catch (exp: Exception) {
         return ""
-    return Regex("""[\- ()]""").replace(phone, "")
+    }
 
 
 }
