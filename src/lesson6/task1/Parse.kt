@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 /**
  * Пример
  *
@@ -16,6 +18,42 @@ fun timeStrToSeconds(str: String): Int {
         result = result * 60 + number
     }
     return result
+}
+
+fun monthToNumber(month: String): Int {
+    return when (month) {
+        "января" -> 1
+        "февраля" -> 2
+        "марта" -> 3
+        "апреля" -> 4
+        "мая" -> 5
+        "июня" -> 6
+        "июля" -> 7
+        "августа" -> 8
+        "сентября" -> 9
+        "октября" -> 10
+        "ноября" -> 11
+        "декабря" -> 12
+        else -> -1
+    }
+}
+
+fun numberToMonth(month: Int): String {
+    return when (month) {
+        1 -> "января"
+        2 -> "февраля"
+        3 -> "марта"
+        4 -> "апреля"
+        5 -> "мая"
+        6 -> "июня"
+        7 -> "июля"
+        8 -> "августа"
+        9 -> "сентября"
+        10 -> "октября"
+        11 -> "ноября"
+        12 -> "декабря"
+        else -> ""
+    }
 }
 
 /**
@@ -69,7 +107,23 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    try {
+        val date = str.split(" ")
+        if (date.size != 3)
+            return ""
+        val day = date[0].toInt()
+        val month = monthToNumber(date[1])
+        val year = date[2].toInt()
+        if ((month == -1) || (day > daysInMonth(month, year)) || (day < 1) || (year < 1))
+            return ""
+        return String.format("%02d.%02d.%d", day, month, year)
+    } catch (exc: NumberFormatException) {
+        return ""
+    }
+
+
+}
 
 /**
  * Средняя
@@ -81,7 +135,22 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    try {
+        val date = digital.split(".")
+        if (date.size != 3)
+            return ""
+        val day = date[0].toInt()
+        val month = numberToMonth(date[1].toInt())
+        val year = date[2].toInt()
+        if ((month == "") || (day > daysInMonth(date[1].toInt(), year)) || (day < 1) || (year < 1))
+            return ""
+
+        return String.format("%d %s %d", day, month, year)
+    } catch (exp: NumberFormatException) {
+        return ""
+    }
+}
 
 /**
  * Средняя
@@ -97,7 +166,18 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    for (i in 0 until phone.length)
+        if ((phone[i] == '(') && (phone[i + 1] == ')'))
+            return ""
+    val a = Regex("""[^+\- 0-9()]""")
+    if (a.findAll(phone, startIndex = 0).toMutableList() != emptyList<MatchResult>())
+        return ""
+    return Regex("""[\- ()]""").replace(phone, "")
+
+
+}
+
 
 /**
  * Средняя
@@ -109,7 +189,22 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    val a = Regex("""[^ 0-9%\-]""")
+    if (a.findAll(jumps, startIndex = 0).toMutableList() != emptyList<MatchResult>())
+        return -1
+    val replace = (Regex("""[%\- ]""").replace(jumps, " ")).split(" ").toMutableList()
+    var max = -1000
+    for (i in 0 until replace.size)
+        replace.remove("")
+    for (i in 0 until replace.size)
+        if (replace[i].toInt() > max)
+            max = replace[i].toInt()
+    return if (max == -1000) -1
+    else max
+
+
+}
 
 /**
  * Сложная
@@ -122,7 +217,32 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    val a = Regex("""[+]""")
+    if (a.findAll(jumps, startIndex = 0).toMutableList() == emptyList<MatchResult>())
+        return -1
+    val b = Regex("""[^ 0-9%\-+]""")
+    if (b.findAll(jumps, startIndex = 0).toMutableList() != emptyList<MatchResult>())
+        return -1
+    val replace = Regex("""[%\- ]""").replace(jumps, " ").split(" ").toMutableList()
+    var max = -1000
+    for (i in 0 until replace.size)
+        replace.remove("")
+    for (i in 0 until replace.size) {
+        if (replace[i] == "+")
+            replace[i - 1] += replace[i]
+    }
+    replace.removeIf { it == "+" || it.last() != '+' }
+    val res = replace.joinToString(separator = "").split("+").toMutableList()
+    res.removeIf { it == "" }
+    for (i in 0 until res.size)
+        if (res[i].toInt() > max)
+            max = res[i].toInt()
+
+    return max
+
+
+}
 
 /**
  * Сложная
@@ -133,7 +253,39 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    try {
+        val replace = Regex("""[ ]""").replace(expression, " ").split(" ").toMutableList()
+        replace.removeIf { it.isEmpty() }
+        if (replace[0].startsWith('+') || replace[0].startsWith('-'))
+            throw IllegalArgumentException()
+        var counter = 0
+        var counter2 = 0
+        var sum = 0
+        for (element in replace) {
+            if (element == "-")
+                counter++
+            if (element == "+")
+                counter2++
+        }
+        for (i in 0 until replace.size - counter)
+            if (replace[i] == "-") {
+                replace[i] += replace[i + 1]
+                replace.remove(replace[i + 1])
+            }
+        for (i in 0 until replace.size - counter2)
+            if (replace[i] == "+") {
+                replace[i] += replace[i + 1]
+                replace.remove(replace[i + 1])
+            }
+        for (element in replace)
+            sum += element.toInt()
+        return sum
+    } catch (exp: Exception) {
+        throw IllegalArgumentException()
+    }
+}
+
 
 /**
  * Сложная
@@ -144,7 +296,25 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val a = str.split(" ")
+    var res = 0
+    var counter = 0
+    var sum = 0
+    var length = 0
+    for (i in 0 until a.size - 1) {
+        length = a[i].length
+        sum += length
+        if (a[i].toLowerCase() == a[i + 1].toLowerCase()) {
+            counter++
+            res = (sum + i) - length
+            break
+        }
+    }
+    return if (counter > 0) res
+    else -1
+
+}
 
 /**
  * Сложная
@@ -157,7 +327,26 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    try {
+        val a = description.split(";")
+        var c = listOf<String>()
+        var cost = " "
+        var name = " "
+        var maxcost = -1.0
+        for (i in 0 until a.size) {
+            c = a[i].split(" ").toMutableList()
+            c.removeIf { it.isEmpty() }
+            if (c[1].toDouble() > maxcost) {
+                maxcost = c[1].toDouble()
+                name = c[0]
+            }
+        }
+        return name
+    } catch (exp: Exception) {
+        return ""
+    }
+}
 
 /**
  * Сложная
@@ -208,4 +397,73 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    val a = Regex("""[^ +\-><\[\]]""")
+    if (a.findAll(commands, 0).toMutableList() != emptyList<MatchResult>())
+        throw IllegalArgumentException()
+    var countOfClose = 0
+    var countOfOpen = 0
+    var openindex = 0
+    var closeindex = 0
+    for (i in 0 until commands.length) {
+        if (commands[i] == '[')
+            countOfOpen++
+        if (commands[i] == ']')
+            countOfClose++
+    }
+    if (countOfClose != countOfOpen)
+        throw IllegalArgumentException()
+
+    var res = MutableList(cells) { 0 }
+    var position = cells / 2
+    var i = 0
+    var c = 0
+    val listofidexes = mutableListOf<Int>()
+    while ((i < commands.length) && (c < limit)) {
+        when (commands[i]) {
+            '+' -> res[position]++
+            '-' -> res[position]--
+            '>' -> {
+                position++
+                if (position > cells)
+                    throw IllegalStateException()
+            }
+            '<' -> {
+                position--
+                if (position < 0)
+                    throw IllegalStateException()
+            }
+            '[' -> if (res[position] == 0) {
+                openindex = i
+                closeindex = findindex(openindex, commands)
+                i = closeindex + 1
+            } else listofidexes += i
+            ']' -> if (res[position] != 0)
+                i = listofidexes.last()
+            else listofidexes -= listofidexes.last()
+        }
+        i++
+        c++
+    }
+
+    return res
+
+}
+
+fun findindex(openindex: Int, str: String): Int {
+    var a = openindex + 1
+    var counter = 0
+    while (a < str.length) {
+        if (str[a] == '[')
+            counter++
+        if (str[a] == ']') {
+            if (counter != 0)
+                counter--
+            else break
+        }
+        a++
+    }
+    return a
+}
+
+
