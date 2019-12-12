@@ -254,32 +254,36 @@ fun bestHighJump(jumps: String): Int {
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    val replace = Regex("""[ ]""").replace(expression, " ").split(" ").toMutableList()
-    replace.removeIf { it.isEmpty() }
-    if (replace[0].startsWith('+') || replace[0].startsWith('-'))
+    try {
+        val replace = Regex("""[ ]""").replace(expression, " ").split(" ").toMutableList()
+        replace.removeIf { it.isEmpty() }
+        if (replace[0].startsWith('+') || replace[0].startsWith('-'))
+            throw IllegalArgumentException()
+        var counter = 0
+        var counter2 = 0
+        var sum = 0
+        for (element in replace) {
+            if (element == "-")
+                counter++
+            if (element == "+")
+                counter2++
+        }
+        for (i in 0 until replace.size - counter2)
+            if (replace[i] == "+") {
+                replace[i] += replace[i + 1]
+                replace.remove(replace[i + 1])
+            }
+        for (i in 0 until replace.size - counter)
+            if (replace[i] == "-") {
+                replace[i] += replace[i + 1]
+                replace.remove(replace[i + 1])
+            }
+        for (element in replace)
+            sum += element.toInt()
+        return sum
+    } catch (exp: Exception) {
         throw IllegalArgumentException()
-    var counter = 0
-    var counter2 = 0
-    var sum = 0
-    for (element in replace) {
-        if (element == "-")
-            counter++
-        if (element == "+")
-            counter2++
     }
-    for (i in 0 until replace.size - counter2)
-        if (replace[i] == "+") {
-            replace[i] += replace[i + 1]
-            replace.remove(replace[i + 1])
-        }
-    for (i in 0 until replace.size - counter)
-        if (replace[i] == "-") {
-            replace[i] += replace[i + 1]
-            replace.remove(replace[i + 1])
-        }
-    for (element in replace)
-        sum += element.toInt()
-    return sum
 }
 
 /**
@@ -410,7 +414,11 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         throw IllegalArgumentException()
 
     var res = MutableList(cells) { 0 }
-    var position = cells / 2
+    var position = 0
+    position = if (cells > 2)
+        cells / 2
+    else 1
+
     var i = 0
     var c = 0
     val listofidexes = mutableListOf<Int>()
