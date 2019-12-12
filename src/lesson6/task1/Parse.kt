@@ -253,38 +253,7 @@ fun bestHighJump(jumps: String): Int {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int {
-    try {
-        val replace = Regex("""[ ]""").replace(expression, " ").split(" ").toMutableList()
-        replace.removeIf { it.isEmpty() }
-        if (replace[0].startsWith('+') || replace[0].startsWith('-'))
-            throw IllegalArgumentException()
-        var counter = 0
-        var counter2 = 0
-        var sum = 0
-        for (element in replace) {
-            if (element == "-")
-                counter++
-            if (element == "+")
-                counter2++
-        }
-        for (i in 0 until replace.size - counter2)
-            if (replace[i] == "+") {
-                replace[i] += replace[i + 1]
-                replace.remove(replace[i + 1])
-            }
-        for (i in 0 until replace.size - counter)
-            if (replace[i] == "-") {
-                replace[i] += replace[i + 1]
-                replace.remove(replace[i + 1])
-            }
-        for (element in replace)
-            sum += element.toInt()
-        return sum
-    } catch (exp: Exception) {
-        throw IllegalArgumentException()
-    }
-}
+fun plusMinus(expression: String): Int = TODO()
 
 /**
  * Сложная
@@ -417,7 +386,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var position = 0
     position = if (cells > 2)
         cells / 2
-    else 1
+    else 0
 
     var i = 0
     var c = 0
@@ -428,7 +397,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             '-' -> res[position]--
             '>' -> {
                 position++
-                if (position > cells)
+                if (position >= cells)
                     throw IllegalStateException()
             }
             '<' -> {
