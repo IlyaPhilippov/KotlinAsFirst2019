@@ -65,9 +65,9 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
             var index = 0
             var recentindex = recentline.indexOf(recentstr, index)
             while (recentindex != -1) {
+                res[str] = res[str]?.plus(1)!!
                 index = recentindex + 1
                 recentindex = recentline.indexOf(recentstr, index)
-                res[str] = res[str]?.plus(1)!!
             }
         }
     }
@@ -88,7 +88,26 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val input = File(inputName).readLines()
+    val output = File(outputName).bufferedWriter()
+    val replace = mapOf('ы' to 'и', 'я' to 'а', 'ю' to 'у')
+    val charList = listOf('ж', 'ч', 'ш', 'щ')
+    var recentChar: Char
+    for (line in input) {
+        val newline = line.toMutableList()
+        output.write(line[0].toString())
+        for (i in 1 until newline.size) {
+            if ((newline[i - 1].toLowerCase() in charList) && (newline[i].toLowerCase() in replace)) {
+                recentChar = newline[i]
+                newline[i] = replace.getOrDefault(newline[i], ' ')
+                if (newline[i] == ' ')
+                    newline[i] = replace.getValue(recentChar.toLowerCase()).toUpperCase()
+                output.write(newline[i].toString())
+            } else output.write(newline[i].toString())
+        }
+        output.newLine()
+    }
+    output.close()
 }
 
 /**
