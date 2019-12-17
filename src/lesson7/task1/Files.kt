@@ -53,26 +53,8 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    val b = File(inputName).readLines()
-    val res = mutableMapOf<String, Int>()
-    for (str in substrings)
-        res[str] = 0
-    for (line in b) {
-        for (str in substrings) {
-            val recentstr = str.toLowerCase()
-            val recentline = line.toLowerCase()
-            var index = 0
-            var recentindex = recentline.indexOf(recentstr, index)
-            while (recentindex != -1) {
-                index = recentindex + 1
-                recentindex = recentline.indexOf(recentstr, index)
-                res[str] = res[str]?.plus(1)!!
-            }
-        }
-    }
-    return res
-}
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+
 
 /**
  * Средняя
@@ -88,26 +70,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    val input = File(inputName).readLines()
-    val output = File(outputName).bufferedWriter()
-    val replace = mapOf('ы' to 'и', 'я' to 'а', 'ю' to 'у')
-    val charList = listOf('ж', 'ч', 'ш', 'щ')
-    var recentChar: Char
-    for (line in input) {
-        val newline = line.toMutableList()
-        output.write(line[0].toString())
-        for (i in 1 until newline.size) {
-            if ((newline[i - 1].toLowerCase() in charList) && (newline[i].toLowerCase() in replace)) {
-                recentChar = newline[i]
-                newline[i] = replace.getOrDefault(newline[i], ' ')
-                if (newline[i] == ' ')
-                    newline[i] = replace.getValue(recentChar.toLowerCase()).toUpperCase()
-                output.write(newline[i].toString())
-            } else output.write(newline[i].toString())
-        }
-        output.newLine()
-    }
-    output.close()
+    TODO()
 }
 
 /**
@@ -128,26 +91,7 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    val input = File(inputName).readLines()
-    val output = File(outputName).bufferedWriter()
-    val formText = mutableListOf<String>()
-    var maxlenght = -1
-    var recentLenght: Int
-    for (line in input)
-        if (line.length > maxlenght)
-            maxlenght = line.length
-    for (str in input)
-        formText.add(str.trim())
-    for (str in formText) {
-        recentLenght = str.length
-        var lenghtOfStr = (maxlenght / 2) + (recentLenght / 2)
-        if (recentLenght % 2 != 0)
-            lenghtOfStr += 1
-        val line = String.format("%${lenghtOfStr}s", str)
-        output.write(line)
-        output.newLine()
-    }
-    output.close()
+    TODO()
 }
 
 /**
@@ -181,7 +125,6 @@ fun alignFileByWidth(inputName: String, outputName: String) {
     TODO()
 }
 
-
 /**
  * Средняя
  *
@@ -200,7 +143,7 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): MutableList<List<String>> = TODO()
+fun top20Words(inputName: String): Map<String, Int> = TODO()
 
 /**
  * Средняя
