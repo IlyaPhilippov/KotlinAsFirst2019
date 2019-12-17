@@ -54,11 +54,11 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  *
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
-    val a = File(inputName).readLines()
+    val b = File(inputName).readLines()
     val res = mutableMapOf<String, Int>()
     for (str in substrings)
         res[str] = 0
-    for (line in a) {
+    for (line in b) {
         for (str in substrings) {
             val recentstr = str.toLowerCase()
             val recentline = line.toLowerCase()
@@ -92,7 +92,7 @@ fun sibilants(inputName: String, outputName: String) {
     val output = File(outputName).bufferedWriter()
     val replace = mapOf('ы' to 'и', 'я' to 'а', 'ю' to 'у')
     val charList = listOf('ж', 'ч', 'ш', 'щ')
-    var recentChar = ' '
+    var recentChar: Char
     for (line in input) {
         val newline = line.toMutableList()
         output.write(line[0].toString())
@@ -132,7 +132,7 @@ fun centerFile(inputName: String, outputName: String) {
     val output = File(outputName).bufferedWriter()
     val formText = mutableListOf<String>()
     var maxlenght = -1
-    var recentLenght = 0
+    var recentLenght: Int
     for (line in input)
         if (line.length > maxlenght)
             maxlenght = line.length
