@@ -114,16 +114,11 @@ fun centerFile(inputName: String, outputName: String) {
     val input = File(inputName).readLines()
     val output = File(outputName).bufferedWriter()
     val formText = mutableListOf<String>()
-    val Check = mutableListOf<String>()
     var maxlenght = -1
     var recentLenght: Int
     for (line in input)
         if (line.length > maxlenght)
             maxlenght = line.length
-    for (str in input)
-        Check.add(str)
-    if (Check.size == 1)
-        output.write(Check[0])
     for (str in input)
         formText.add(str.trim())
     for (str in formText) {
