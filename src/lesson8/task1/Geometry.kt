@@ -187,7 +187,7 @@ fun lineBySegment(s: Segment): Line {
     angelOfSegment = if (a.x == b.x)
         PI / 2
     else
-        (atan((maxOf(a.y, b.y) - minOf(a.y, b.y)) / (maxOf(a.x, b.x) - minOf(a.x, b.x))) + PI) % PI
+        abs((atan((maxOf(a.y, b.y) - minOf(a.y, b.y)) / (maxOf(a.x, b.x) - minOf(a.x, b.x))) + PI) % PI)
     return Line(s.begin, angelOfSegment)
 }
 
