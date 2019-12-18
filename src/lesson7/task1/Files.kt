@@ -129,7 +129,7 @@ fun centerFile(inputName: String, outputName: String) {
             output.newLine()
         } else {
             if ((recentLenght % 2 != 0) && (lenghtOfStr != 1)) {
-                if ((maxlenght % 2 == 0))
+                if (maxlenght % 2 == 0)
                     lenghtOfStr -= 1
                 else lenghtOfStr += 1
             }
