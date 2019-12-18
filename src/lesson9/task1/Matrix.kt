@@ -48,18 +48,22 @@ fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> = MatrixImpl(widt
  *
  * Реализация интерфейса "матрица"
  */
-class MatrixImpl<E>(override val width: Int, override val height: Int, val e: E) : Matrix<E> {
-    val listOfLists = MutableList(width) { MutableList(height) { e } }
-    override fun get(row: Int, column: Int): E = listOfLists[column][row]
+class MatrixImpl<E>(override val width: Int, override val height: Int, val standart: E) : Matrix<E> {
+    val listOfLists = MutableList(height)
+    { row ->
+        MutableList(width) { standart }
+    }
 
-    override fun get(cell: Cell): E = get(cell.column, cell.row)
+    override fun get(row: Int, column: Int): E = listOfLists[row][column]
+
+    override fun get(cell: Cell): E = get(cell.row, cell.column)
 
     override fun set(row: Int, column: Int, value: E) {
-        listOfLists[column][row] = value
+        listOfLists[row][column] = value
     }
 
     override fun set(cell: Cell, value: E) {
-        set(cell.column, cell.row, value)
+        set(cell.row, cell.column, value)
     }
 
     override fun equals(other: Any?) =
@@ -71,7 +75,7 @@ class MatrixImpl<E>(override val width: Int, override val height: Int, val e: E)
     override fun hashCode(): Int {
         var result = width
         result = 31 * result + height
-        result = 31 * result + (e?.hashCode() ?: 0)
+        result = 31 * result + (standart?.hashCode() ?: 0)
         result = 31 * result + listOfLists.hashCode()
         return result
     }

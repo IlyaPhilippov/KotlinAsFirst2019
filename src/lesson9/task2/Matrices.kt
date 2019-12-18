@@ -3,7 +3,9 @@
 package lesson9.task2
 
 import lesson9.task1.Matrix
+import lesson9.task1.MatrixImpl
 import lesson9.task1.createMatrix
+import java.lang.IllegalArgumentException
 
 // Все задачи в этом файле требуют наличия реализации интерфейса "Матрица" в Matrix.kt
 
@@ -104,7 +106,15 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO()
  * 4 5 6      8 5 2
  * 7 8 9      9 6 3
  */
-fun <E> rotate(matrix: Matrix<E>): Matrix<E> = TODO()
+fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
+    if (matrix.height != matrix.width)
+        throw IllegalArgumentException()
+    val matrix2 = MatrixImpl(matrix.height, matrix.width, matrix[0, 0])
+    for (i in 0 until matrix.height)
+        for (j in 0 until matrix.width)
+            matrix2[i, j] = matrix[matrix.height - j - 1, i]
+    return matrix2
+}
 
 /**
  * Сложная
@@ -119,7 +129,27 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> = TODO()
  * 1 2 3
  * 3 1 2
  */
-fun isLatinSquare(matrix: Matrix<Int>): Boolean = TODO()
+fun isLatinSquare(matrix: Matrix<Int>): Boolean {
+    if (matrix.height != matrix.width)
+        return false
+    val listOfn = mutableListOf<Int>()
+    for (i in 1 until matrix.height + 1)
+        listOfn.add(i)
+    var counter = 0
+    val y = mutableListOf<Int>()
+    val x = mutableListOf<Int>()
+    for (i in 0 until matrix.height) {
+        x.removeIf { it != 0 }
+        y.removeIf { it != 0 }
+        for (j in 0 until matrix.height) {
+            x.add(matrix[i, j])
+            y.add(matrix[j, i])
+        }
+        if ((x.toSet() != listOfn.toSet()) || (y.toSet() != listOfn.toSet()))
+            counter++
+    }
+    return counter == 0
+}
 
 /**
  * Средняя
