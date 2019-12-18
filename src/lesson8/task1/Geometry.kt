@@ -3,6 +3,7 @@
 package lesson8.task1
 
 import lesson1.task1.sqr
+import java.lang.Exception
 import java.lang.IllegalArgumentException
 import kotlin.math.*
 
@@ -161,8 +162,13 @@ class Line private constructor(val b: Double, val angle: Double) {
      * Найти точку пересечения с другой линией.
      * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
      */
-    fun crossPoint(other: Line): Point = TODO()
-
+    fun crossPoint(other: Line): Point {
+        if (angle == other.angle)
+            throw Exception()
+        val x = (other.b * cos(angle) - b * cos(other.angle)) / sin(angle - other.angle)
+        val y = (b * sin(other.angle) - other.b * sin(angle)) / sin(other.angle - angle)
+        return Point(x, y)
+    }
 
     override fun equals(other: Any?) = other is Line && angle == other.angle && b == other.b
 
@@ -208,7 +214,7 @@ fun lineByPoints(a: Point, b: Point): Line {
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
 fun bisectorByPoints(a: Point, b: Point): Line {
-    val center = Point((a.x + b.x) / 2 , (a.y + b.y) / 2)
+    val center = Point((a.x + b.x) / 2, (a.y + b.y) / 2)
     val angel: Double = if (a.x == b.x)
         PI / 2
     else
@@ -225,6 +231,7 @@ fun bisectorByPoints(a: Point, b: Point): Line {
  */
 fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
 
+
 /**
  * Сложная
  *
@@ -234,7 +241,13 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
+    val centerAB = bisectorByPoints(a, b)
+    val centerBC = bisectorByPoints(b, c)
+    val center = centerAB.crossPoint(centerBC)
+    val radius = center.distance(c)
+    return Circle(center, radius)
+}
 
 /**
  * Очень сложная
