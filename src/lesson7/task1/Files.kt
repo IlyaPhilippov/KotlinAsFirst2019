@@ -122,6 +122,11 @@ fun centerFile(inputName: String, outputName: String) {
     for (str in input)
         formText.add(str.trim())
     for (str in formText) {
+        if (formText.size == 1) {
+            output.write(formText[0])
+            output.close()
+            break
+        }
         recentLenght = str.length
         var lenghtOfStr = (maxlenght / 2) + (recentLenght / 2)
         if (recentLenght % 2 != 0)
