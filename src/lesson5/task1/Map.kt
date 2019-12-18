@@ -130,7 +130,7 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
     for ((key, value) in b)
         if (value == a[key])
             a.remove(key)
@@ -144,9 +144,9 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    var aset = a.toSet()
-    var bset = b.toSet()
-    return a.intersect(b).toList()
+    val aset = a.toSet()
+    val bset = b.toSet()
+    return aset.intersect(bset).toList()
 }
 
 
@@ -191,8 +191,8 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val itemprice = mutableMapOf<String, List<Double>>()
     val res = mutableMapOf<String, Double>()
-    var size = 0.0
-    var sum = 0.0
+    var size: Double
+    var sum: Double
     for ((key, value) in stockPrices)
         if (key in itemprice)
             itemprice[key] = itemprice[key]?.plus(value)!!
@@ -246,7 +246,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    if (word == " ")
+    if (word == "")
         return false
     val wordset = word.toLowerCase().toSet()
     val charsset = chars.toString().toLowerCase().toSet()

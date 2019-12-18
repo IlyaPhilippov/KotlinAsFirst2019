@@ -273,7 +273,7 @@ fun firstDuplicateIndex(str: String): Int {
     var res = 0
     var counter = 0
     var sum = 0
-    var length = 0
+    var length: Int
     for (i in 0 until a.size - 1) {
         length = a[i].length
         sum += length
@@ -302,8 +302,7 @@ fun firstDuplicateIndex(str: String): Int {
 fun mostExpensive(description: String): String {
     try {
         val a = description.split(";")
-        var c = listOf<String>()
-        var cost = " "
+        var c: List<String>
         var name = " "
         var maxcost = -1.0
         for (i in 0 until a.size) {
@@ -375,8 +374,8 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         throw IllegalArgumentException()
     var countOfClose = 0
     var countOfOpen = 0
-    var openindex = 0
-    var closeindex = 0
+    var openindex: Int
+    var closeindex: Int
     for (i in 0 until commands.length) {
         if (commands[i] == '[')
             countOfOpen++
@@ -386,8 +385,8 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     if (countOfClose != countOfOpen)
         throw IllegalArgumentException()
 
-    var res = MutableList(cells) { 0 }
-    var position = 0
+    val res = MutableList(cells) { 0 }
+    var position: Int
     position = if (cells > 1)
         cells / 2
     else 0
