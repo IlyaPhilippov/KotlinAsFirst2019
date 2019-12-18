@@ -4,10 +4,7 @@ package lesson8.task1
 
 import lesson1.task1.sqr
 import java.lang.IllegalArgumentException
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 
 /**
  * Точка на плоскости
@@ -137,7 +134,13 @@ fun diameter(vararg points: Point): Segment {
  * Построить окружность по её диаметру, заданному двумя точками
  * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
  */
-fun circleByDiameter(diameter: Segment): Circle = TODO()
+fun circleByDiameter(diameter: Segment): Circle {
+    val circleCenterX = (diameter.begin.x + diameter.end.x) / 2
+    val circleCenterY = (diameter.begin.y + diameter.end.y) / 2
+    val center = Point(circleCenterX, circleCenterY)
+    val radius = diameter.begin.distance(diameter.end) / 2
+    return Circle(center, radius)
+}
 
 /**
  * Прямая, заданная точкой point и углом наклона angle (в радианах) по отношению к оси X.
@@ -160,6 +163,7 @@ class Line private constructor(val b: Double, val angle: Double) {
      */
     fun crossPoint(other: Line): Point = TODO()
 
+
     override fun equals(other: Any?) = other is Line && angle == other.angle && b == other.b
 
     override fun hashCode(): Int {
@@ -176,21 +180,42 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = TODO()
+fun lineBySegment(s: Segment): Line {
+    val a = s.begin
+    val b = s.end
+    val angelOfSegment: Double
+    angelOfSegment = if (a.x == b.x)
+        PI / 2
+    else
+        (atan((maxOf(a.y, b.y) - minOf(a.y, b.y)) / (maxOf(a.x, b.x) - minOf(a.x, b.x))) + PI) % PI
+    return Line(s.begin, angelOfSegment)
+}
+
 
 /**
  * Средняя
  *
  * Построить прямую по двум точкам
  */
-fun lineByPoints(a: Point, b: Point): Line = TODO()
+fun lineByPoints(a: Point, b: Point): Line {
+    val seg = Segment(a, b)
+    return lineBySegment(seg)
+}
 
 /**
  * Сложная
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line = TODO()
+fun bisectorByPoints(a: Point, b: Point): Line {
+    val center = Point((a.x + b.x) / 2 , (a.y + b.y) / 2)
+    val angel: Double = if (a.x == b.x)
+        PI / 2
+    else
+        (atan((maxOf(a.y, b.y) - minOf(a.y, b.y)) / (maxOf(a.x, b.x) - minOf(a.x, b.x))) + PI) % PI
+    val centerAngel = (PI / 2) - angel
+    return Line(center, centerAngel)
+}
 
 /**
  * Средняя
