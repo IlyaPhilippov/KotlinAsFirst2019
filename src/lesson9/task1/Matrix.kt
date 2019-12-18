@@ -2,6 +2,8 @@
 
 package lesson9.task1
 
+import java.lang.IllegalArgumentException
+
 /**
  * Ячейка матрицы: row = ряд, column = колонка
  */
@@ -53,6 +55,12 @@ class MatrixImpl<E>(override val width: Int, override val height: Int, val stand
     { row ->
         MutableList(width) { standart }
     }
+
+    init {
+        if ((height < 1) || (width < 1))
+            throw IllegalArgumentException()
+    }
+
 
     override fun get(row: Int, column: Int): E = listOfLists[row][column]
 

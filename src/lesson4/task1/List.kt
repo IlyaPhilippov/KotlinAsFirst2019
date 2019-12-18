@@ -339,15 +339,7 @@ fun convert(n: Int, base: Int): MutableList<Int> {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String {
-    val a = listOf(
-        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r"
-        , "s", "t", "u", "v", "w", "x", "y", "z"
-    )
-    val convert = convert(n, base)
-    return convert.joinToString(separator = "", transform = { if (it < 10) "$it" else a[it - 10] })
-}
-
+fun convertToString(n: Int, base: Int): String = TODO()
 
 /**
  * Средняя
@@ -378,21 +370,7 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int {
-    val a = listOf(
-        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r"
-        , "s", "t", "u", "v", "w", "x", "y", "z"
-    ).joinToString(separator = "")
-    val list = mutableListOf<Int>()
-    for (char in str)
-        list.add(
-            if (char in a)
-                (char - 'a') + 10
-            else
-                (char - '0')
-        )
-    return decimal(list, base)
-}
+fun decimalFromString(str: String, base: Int): Int = TODO()
 
 /**
  * Сложная
@@ -402,39 +380,7 @@ fun decimalFromString(str: String, base: Int): Int {
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String {
-    var k = n
-    var counter = 0
-    var plist = listOf<String>()
-    val list = mutableListOf<String>()
-    val rim1 = listOf("I", "V", "X")
-    val rim2 = listOf("X", "L", "C")
-    val rim3 = listOf("C", "D", "M")
-    val rim4 = listOf("M")
-    var c = 0
-    while (k > 0) {
-        counter++
-        c = k % 10
-        k /= 10
-        plist = when (counter) {
-            1 -> rim1
-            2 -> rim2
-            3 -> rim3
-            else -> rim4
-        }
-        list.add(
-            0, when {
-                counter >= 4 -> plist[0].repeat(c)
-                c == 9 -> plist[0].repeat(10 - c) + plist[2]
-                c == 0 -> ""
-                c in 1..3 -> plist[0].repeat(c)
-                c in 4..5 -> plist[0].repeat(5 - c) + plist[1]
-                else -> plist[1] + (plist[0].repeat(c - 5))
-            }
-        )
-    }
-    return list.joinToString(separator = "")
-}
+fun roman(n: Int): String = TODO()
 
 /**
  * Очень сложная
