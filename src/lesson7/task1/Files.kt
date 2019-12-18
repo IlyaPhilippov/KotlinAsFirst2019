@@ -124,12 +124,15 @@ fun centerFile(inputName: String, outputName: String) {
     for (str in formText) {
         recentLenght = str.length
         var lenghtOfStr = (maxlenght / 2) + (recentLenght / 2)
-        if ((recentLenght == maxlenght) || (recentLenght + 1 == maxlenght) ) {
+        if (recentLenght == maxlenght) {
             output.write(str)
             output.newLine()
         } else {
-            if (recentLenght % 2 != 0)
-                lenghtOfStr += 1
+            if (recentLenght % 2 != 0) {
+                if (maxlenght % 2 == 0)
+                    lenghtOfStr -= 1
+                else lenghtOfStr += 1
+            }
             val line = String.format("%${lenghtOfStr}s", str)
             output.write(line)
             output.newLine()
