@@ -213,7 +213,7 @@ fun bisectorByPoints(a: Point, b: Point): Line {
         PI / 2
     else
         abs((atan((a.y - b.y) / (a.x - b.x)) + PI) % PI)
-    val centerAngel = (PI / 2) - angel
+    val centerAngel = (angel + (PI / 2)) % PI
     return Line(center, centerAngel)
 }
 
